@@ -50,7 +50,7 @@ function App() {
           loading={loading}
           setLoading={setLoading}
         />
-        {results && loading ? <IsLoading />: <DisplayMedia results={results} />}
+        {(results && loading) ? <IsLoading />: <DisplayMedia results={results} />}
       </SiteWrapper>
     </ThemeProvider>
   );
