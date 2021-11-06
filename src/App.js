@@ -25,6 +25,7 @@ function App() {
         fetchData(query).then((data) => {
           const getFirstTenResults = data.collection.items.slice(0, 10);
           setResults(getFirstTenResults);
+          setLoading(false);
         });
       }
     } catch (error) {
@@ -37,20 +38,19 @@ function App() {
   };
 
   if (error) return <ErrorMessage />;
-
-  if (!results.length) {
-    setLoading(true);
-    return <IsLoading />;
-  }
-
+  
   return (
     <ThemeProvider theme={crukTheme}>
       <SiteWrapper>
         <div>
           <h1>CRUK technical exercise - React</h1>
         </div>
-        <SearchForm searchQuery={searchQuery} loading={loading} />
-        {results && <DisplayMedia results={results} />}
+        <SearchForm
+          searchQuery={searchQuery}
+          loading={loading}
+          setLoading={setLoading}
+        />
+        {results && loading ? <IsLoading />: <DisplayMedia results={results} />}
       </SiteWrapper>
     </ThemeProvider>
   );
