@@ -3,6 +3,9 @@ import { fetchData } from "./api/fetcher";
 import styled, { ThemeProvider } from "styled-components";
 import { crukTheme } from "@cruk/cruk-react-components";
 import { SearchForm } from "./components/searchform";
+import { DisplayMedia } from "./components/displaymedia";
+import { ErrorMessage } from "formik";
+import { IsLoading } from "./components/isloading";
 
 const SiteWrapper = styled.div`
   max-width: 1200px;
@@ -13,13 +16,19 @@ const SiteWrapper = styled.div`
 function App() {
   const [results, setResults] = useState([]);
   const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    if (query) {
-      fetchData(query).then((data) => {
-        const getFirstTenResults = data.collection.items.slice(0, 10);
-        setResults(getFirstTenResults);
-      });
+    try {
+      if (query) {
+        fetchData(query).then((data) => {
+          const getFirstTenResults = data.collection.items.slice(0, 10);
+          setResults(getFirstTenResults);
+        });
+      }
+    } catch (error) {
+      setError(true);
     }
   }, [query]);
 
@@ -27,7 +36,12 @@ function App() {
     setQuery(query);
   };
 
-  console.log(results);
+  if (error) return <ErrorMessage />;
+
+  if (!results.length) {
+    setLoading(true);
+    return <IsLoading />;
+  }
 
   return (
     <ThemeProvider theme={crukTheme}>
@@ -35,7 +49,8 @@ function App() {
         <div>
           <h1>CRUK technical exercise - React</h1>
         </div>
-        <SearchForm searchQuery={searchQuery} />
+        <SearchForm searchQuery={searchQuery} loading={loading} />
+        {results && <DisplayMedia results={results} />}
       </SiteWrapper>
     </ThemeProvider>
   );

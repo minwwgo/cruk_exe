@@ -9,7 +9,7 @@ import {
 import { formSchema } from "./schema";
 
 export const SearchForm = (props) => {
-  const { searchQuery } = props;
+  const { searchQuery, loading } = props;
   return (
     <Formik
       validateOnChange
@@ -64,7 +64,9 @@ export const SearchForm = (props) => {
               )}
             </Field>
 
-            <Button type="submit">Submit</Button>
+            <Button type="submit">
+              {loading ? "Submitting... " : "Submit"}
+            </Button>
           </Form>
         );
       }}

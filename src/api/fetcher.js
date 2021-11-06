@@ -5,7 +5,8 @@ export const fetchData = async (query) => {
 
   return await fetch(url)
     .then((response) => response.json())
-    .then((data) => data);
+    .then((data) => data)
+    
 };
 
 const updateUrl = async (query) => {
