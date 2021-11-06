@@ -6,7 +6,7 @@ import {
   Select,
   ErrorText,
 } from "@cruk/cruk-react-components";
-import { formSchema } from "../schema";
+import { formSchema } from "./schema";
 
 export const SearchForm = (props) => {
   const { searchQuery } = props;
