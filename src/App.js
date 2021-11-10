@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchData } from "./api/fetcher";
+import { fetchData, updateResult } from "./api/fetcher";
 import styled, { ThemeProvider } from "styled-components";
 import { crukTheme } from "@cruk/cruk-react-components";
 import { SearchForm } from "./components/searchform";
@@ -24,7 +24,10 @@ function App() {
       if (query) {
         fetchData(query).then((data) => {
           const getFirstTenResults = data.collection.items.slice(0, 10);
-          setResults(getFirstTenResults);
+          updateResult(getFirstTenResults).then((data) => {
+            setResults(data);
+          });
+
           setLoading(false);
         });
       }
@@ -38,7 +41,7 @@ function App() {
   };
 
   if (error) return <ErrorMessage />;
-  
+
   return (
     <ThemeProvider theme={crukTheme}>
       <SiteWrapper>
@@ -50,10 +53,22 @@ function App() {
           loading={loading}
           setLoading={setLoading}
         />
-        {(results && loading) ? <IsLoading />: <DisplayMedia results={results} />}
+        {results && loading ? (
+          <IsLoading />
+        ) : (
+          <DisplayWrapper>
+            <DisplayMedia results={results} />
+          </DisplayWrapper>
+        )}
       </SiteWrapper>
     </ThemeProvider>
   );
 }
 
 export default App;
+
+const DisplayWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+`;
