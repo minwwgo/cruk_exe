@@ -7,7 +7,7 @@ export const MediaAudio = ({ result }) => {
   return (
     <AudioContent key={result.data[0].nasa_id}>
       <audio controls>
-        <source src={result.url} />
+        <source src={result.linkOne} />
       </audio>
       <p> {result.data[0].title}</p>
     </AudioContent>

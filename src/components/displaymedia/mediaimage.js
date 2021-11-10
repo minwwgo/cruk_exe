@@ -5,8 +5,8 @@ export const MediaImage = ({result}) => {
   console.log(result)
   return (
     <ImageWrapper>
-      <Image src={result.url} alt={result.title} />
-      <p>  {result.data[0].title}</p>
+      <Image src={result.linkOne} alt={result.data[0].title} />
+      <p> {result.data[0].title}</p>
     </ImageWrapper>
   );
 }
